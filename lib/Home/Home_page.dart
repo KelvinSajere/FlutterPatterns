@@ -7,18 +7,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("Home"),
+    final bloc = BlocProvider.of<CameraBloc>(context);
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Home"),
         ),
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.contact_mail),
-            onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CameraPage()),
-                  )
-                }),
+            onPressed: () {
+              bloc.dispatch(LoadCameraEvent());
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CameraPage()),
+              );
+            }),
         body: Container(
           margin: const EdgeInsets.all(10.0),
           child: Column(

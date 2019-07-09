@@ -47,11 +47,11 @@ class _MyCameraPageState extends State<MyCameraPage> {
           title: Text('Take A Picture'),
         ),
         body: FutureBuilder<void>(
-          future: widget._bloc.initializeControllerFuture,
+          future: widget._bloc.getInitControllerFuture(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               // If the Future is complete, display the preview.
-              return CameraPreview(widget._bloc.controller);
+              return CameraPreview(widget._bloc.getController());
             } else {
               // Otherwise, display a loading indicator.
               return Center(child: CircularProgressIndicator());
@@ -61,7 +61,10 @@ class _MyCameraPageState extends State<MyCameraPage> {
         floatingActionButton: Align(
           alignment: Alignment.bottomCenter,
           child: FloatingActionButton(
-              child: Icon(Icons.camera_enhance), onPressed: () async {}),
+              child: Icon(Icons.camera_enhance),
+              onPressed: () async {
+                // widget._bloc.dispatch(event)
+              }),
         ));
   }
 }

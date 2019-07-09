@@ -10,3 +10,8 @@ class MyCameraPagePressed extends MycameraEvent {
   @override
   String toString() => "MyCameraPagePressed";
 }
+
+class TakePicture extends MycameraEvent {
+  @override
+  String toString() => "TakePicture";
+}

@@ -32,6 +32,8 @@ dependencies:
   camera:
   path_provider:
   path:
+  # Image gallery save
+  image_gallery_saver:
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quicksnap/Camera/index.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quicksnap/Home/Home_page.dart';
-import './Providers/Provider.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -27,12 +24,7 @@ class SimpleBlocDelegate extends BlocDelegate {
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  runApp(
-    BlocProviderTree(
-      blocProviders: Provider.providers,
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

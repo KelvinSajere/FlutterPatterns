@@ -6,6 +6,7 @@ import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
 class MycameraBloc extends Bloc<MycameraEvent, MycameraState> {
+  //singleton ensure that every time we create a new instance of the bloc, we have the current state
   Future<void> _initializeControllerFuture;
   CameraController _controller;
 

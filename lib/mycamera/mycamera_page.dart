@@ -6,12 +6,7 @@ import 'package:quicksnap/mycamera/index.dart';
 import 'package:quicksnap/mycamera/mycamera_bloc.dart';
 import 'package:bloc/bloc.dart';
 
-class MyCameraBlocBuilder extends StatefulWidget {
-  @override
-  _MyCameraBlocBuilderState createState() => _MyCameraBlocBuilderState();
-}
-
-class _MyCameraBlocBuilderState extends State<MyCameraBlocBuilder> {
+class MyCameraBlocBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _camerBloc = BlocProvider.of<MycameraBloc>(context);

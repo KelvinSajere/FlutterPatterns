@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import './index.dart';
+import 'package:path/path.dart' show join;
+import 'package:path_provider/path_provider.dart';
 
 class MycameraBloc extends Bloc<MycameraEvent, MycameraState> {
   Future<void> _initializeControllerFuture;
@@ -23,17 +25,43 @@ class MycameraBloc extends Bloc<MycameraEvent, MycameraState> {
     MycameraEvent event,
   ) async* {
     if (event is MyCameraPagePressed) {
-      final cameras = await availableCameras();
-      final _camera = cameras.first;
-      this._controller = CameraController(
-          // Get a specific camera from the list of available cameras.
-          _camera,
-          // Define the resolution to use.
-          ResolutionPreset.medium);
-      this._initializeControllerFuture = this._controller.initialize();
+      _setUpCamera();
       yield LoadingCameraState();
+    } else if (event is TakePicture) {
+      final path = await _takePicture();
+      yield PictureTakenState(path: path);
+    } else {
+      yield currentState;
     }
-    yield currentState;
+  }
+
+  void _setUpCamera() async {
+    final cameras = await availableCameras();
+    final _camera = cameras.first;
+    this._controller = CameraController(
+        // Get a specific camera from the list of available cameras.
+        _camera,
+        // Define the resolution to use.
+        ResolutionPreset.medium);
+    this._initializeControllerFuture = this._controller.initialize();
+  }
+
+  Future<String> _takePicture() async {
+    await this._initializeControllerFuture;
+
+    // Construct the path where the image should be saved using the
+    // pattern package.
+    final path = join(
+      // Store the picture in the temp directory.
+      // Find the temp directory using the `path_provider` plugin.
+      (await getTemporaryDirectory()).path,
+      '${DateTime.now()}.png',
+    );
+
+    // Attempt to take a picture and log where it's been saved.
+    await this._controller.takePicture(path);
+
+    return path;
   }
 
   @override

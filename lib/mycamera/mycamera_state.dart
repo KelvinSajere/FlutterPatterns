@@ -16,3 +16,10 @@ class LoadingCameraState extends MycameraState {
   @override
   String toString() => "LoadingCameraState";
 }
+
+class PictureTakenState extends MycameraState {
+  final String path;
+  PictureTakenState({@required this.path}) : super([path]);
+  @override
+  String toString() => "PictureTakenState{path:$path}";
+}

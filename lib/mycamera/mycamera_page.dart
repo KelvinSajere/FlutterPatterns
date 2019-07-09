@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:quicksnap/mycamera/index.dart';
 import 'package:quicksnap/mycamera/mycamera_bloc.dart';
 import 'package:bloc/bloc.dart';
+import 'dart:io';
 
 class MyCameraBlocBuilder extends StatelessWidget {
   @override
@@ -43,28 +44,60 @@ class _MyCameraPageState extends State<MyCameraPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Take A Picture'),
-        ),
-        body: FutureBuilder<void>(
-          future: widget._bloc.getInitControllerFuture(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              // If the Future is complete, display the preview.
-              return CameraPreview(widget._bloc.getController());
-            } else {
-              // Otherwise, display a loading indicator.
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-        floatingActionButton: Align(
+      appBar: AppBar(
+        title: Text('Take A Picture'),
+      ),
+      body: FutureBuilder<void>(
+        future: widget._bloc.getInitControllerFuture(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // If the Future is complete, display the preview.
+            return CameraPreview(widget._bloc.getController());
+          } else {
+            // Otherwise, display a loading indicator.
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      floatingActionButton: Align(
           alignment: Alignment.bottomCenter,
           child: FloatingActionButton(
-              child: Icon(Icons.camera_enhance),
-              onPressed: () async {
-                // widget._bloc.dispatch(event)
-              }),
+            child: Icon(Icons.camera_enhance),
+            onPressed: () async {
+              widget._bloc.dispatch(TakePicture());
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DisplayPictureScreen(bloc: widget._bloc),
+                  ));
+            },
+          )),
+    );
+  }
+}
+
+class DisplayPictureScreen extends StatelessWidget {
+  final MycameraBloc _bloc;
+  DisplayPictureScreen({Key key, @required MycameraBloc bloc})
+      : _bloc = bloc,
+        super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: Text('Display the Picture')),
+        // The image is stored as a file on the device. Use the `Image.file`
+        // constructor with the given path to display the image.
+        body: BlocBuilder<MycameraEvent, MycameraState>(
+          bloc: _bloc,
+          builder: (BuildContext context, MycameraState state) {
+            if (state is PictureTakenState) {
+              PictureTakenState picture = state;
+              return Image.file(File(picture.path));
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
         ));
   }
 }

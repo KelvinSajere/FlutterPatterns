@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-
 import 'package:camera/camera.dart';
-import 'package:flutter/widgets.dart';
 import './index.dart';
 
 class MycameraBloc extends Bloc<MycameraEvent, MycameraState> {
@@ -25,5 +23,11 @@ class MycameraBloc extends Bloc<MycameraEvent, MycameraState> {
         ResolutionPreset.medium);
     initializeControllerFuture = controller.initialize();
     yield LoadingCameraState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }

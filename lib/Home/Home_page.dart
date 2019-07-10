@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:quicksnap/mycamera/index.dart';
+import 'package:provider/provider.dart';
+import 'package:quicksnap/Home/Camera/index.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = "/home";
 
   @override
   Widget build(BuildContext context) {
+    final _bloc = Provider.of<CameraBloc>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text("Home"),
@@ -13,9 +15,10 @@ class HomePage extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.contact_mail),
             onPressed: () {
+              _bloc.setUpCamera();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CameraBlocProvider()),
+                MaterialPageRoute(builder: (context) => CameraPage()),
               );
             }),
         body: Container(

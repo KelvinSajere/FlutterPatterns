@@ -16,4 +16,11 @@ BLOC PROVIDER ===> Provides the BLOC to the child widget
 This enables the state to be read after an event has been triggered
 
 ## PROVIDER
+- Providers uses a `ChangeNotifier` strategy. 
+It contains a class with all business logic and state of for that logic. Every time the state within that logic is changed, the change notifier listener notifies the widgets/presentation view associated with those logic.
+- The business logic is passed down the widget tree using `ChangeProvider`
+- The new state from the widget tree is read by using a `Consumer` widget.
+
+For Sample code checkout https://github.com/KelvinSajere/FlutterPatterns-With-Camera/tree/ProviderCameraImplementation
+
 
